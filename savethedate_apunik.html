@@ -26,58 +26,38 @@ html,body{
 }
 
 /* Clickable zone over "06TH DECEMBER 2026 / BANGALORE, INDIA" */
-.date-zone{
+.cal-btn{
   position:absolute;
-  top:45%;
-  left:18%;
-  width:64%;
-  height:9%;
-  cursor:pointer;
-  text-decoration:none;
-  display:flex;
+  top:67%;
+  left:50%;
+  transform:translateX(-50%);
+  display:inline-flex;
   align-items:center;
-  justify-content:center;
-  border-radius:2px;
-  /* Subtle permanent gold underline so it's findable */
-  border-bottom: 1.5px solid rgba(180,140,40,.45);
-}
-
-/* Overlay that appears on hover */
-.date-zone .overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(245,237,210,0.82);
-  border:1px solid rgba(180,140,40,.6);
-  border-radius:2px;
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  opacity:0;
-  transition:opacity .25s ease;
-}
-
-.date-zone:hover .overlay,
-.date-zone:focus .overlay{
-  opacity:1;
-}
-
-.overlay-text{
+  gap:6px;
+  padding:7px 18px;
+  background:rgba(245,237,210,0.55);
+  border:0.5px solid rgba(180,140,40,.5);
+  color:#6B4E10;
   font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(9px,2.2vw,12px);
-  font-weight:500;
+  font-size:clamp(7px,1.6vw,9px);
+  font-weight:400;
   letter-spacing:.28em;
   text-transform:uppercase;
-  color:#6B4E10;
+  text-decoration:none;
   white-space:nowrap;
+  border-radius:1px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  transition:background .25s,color .25s;
 }
-
-.overlay svg{
-  width:14px;height:14px;flex-shrink:0;
-  stroke:#6B4E10;fill:none;
-  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+.cal-btn:hover{
+  background:rgba(139,105,20,0.75);
+  color:#FAF5E8;
+}
+.cal-btn svg{
+  width:10px;height:10px;flex-shrink:0;
+  stroke:currentColor;fill:none;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
 }
 </style>
 </head>
