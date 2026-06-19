@@ -4,170 +4,495 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Apurva &amp; Nikhil · Save the Date · 06 December 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 html,body{
-  height:100%;
-  background:#F0E8D8;
-  display:flex;align-items:center;justify-content:center;
+  height:100%;width:100%;
+  overflow:hidden;
   font-family:'Playfair Display',Georgia,serif;
+  background:#EDE3D0;
+}
+
+/* ── BLURRED BG ── */
+.bg{
+  position:fixed;inset:0;z-index:0;
+  background:url('https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/img/ChatGPT%20Image%20Jun%2019%2C%202026%2C%2004_24_00%20PM.png') center top/cover no-repeat;
+  filter:blur(32px) brightness(1.05) saturate(.65);
+  transform:scale(1.1);
+}
+.bg::after{content:'';position:absolute;inset:0;background:rgba(237,224,200,.65)}
+
+/* ── STAGE ── */
+.stage{
+  position:relative;z-index:1;
+  height:100vh;width:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ══════════════════════════════
+   ENVELOPE
+══════════════════════════════ */
+.env-wrap{
+  position:relative;
+  width:min(340px,88vw);
+  perspective:1000px;
+}
+
+/* Envelope body */
+.envelope{
+  position:relative;
+  width:100%;
+  padding-bottom:68%; /* landscape ratio */
+  cursor:pointer;
+  transition:transform .4s ease;
+}
+.envelope:hover{transform:translateY(-4px)}
+.envelope.opened{cursor:default;transform:none}
+
+/* Back face (bottom of envelope) */
+.env-back{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,#EDD8A8 0%,#D4BA78 40%,#C8A850 100%);
+  border-radius:4px 4px 6px 6px;
+  box-shadow:0 12px 48px rgba(80,50,10,.28),0 4px 12px rgba(80,50,10,.15);
   overflow:hidden;
 }
-
-/* Blurred bleed of the same image fills the entire background */
-.bg-blur{
-  position:fixed;inset:0;z-index:0;
-  background-image:url('https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/img/ChatGPT%20Image%20Jun%2019%2C%202026%2C%2004_24_00%20PM.png');
-  background-size:cover;
-  background-position:center top;
-  filter:blur(28px) brightness(1.08) saturate(.7);
-  transform:scale(1.08); /* hides blur edges */
+/* Paper texture on back */
+.env-back::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  background-size:200px;opacity:1;mix-blend-mode:multiply;
 }
 
-/* Cream tint over the blurred bg so it reads as warm paper, not photo */
-.bg-blur::after{
-  content:'';
+/* Side triangular flaps */
+.env-flap-left,.env-flap-right{
+  position:absolute;bottom:0;
+  width:0;height:0;z-index:2;
+}
+.env-flap-left{
+  left:0;
+  border-bottom:solid calc(50% + 4px) #C8A040;
+  border-right:solid 50% transparent;
+  filter:brightness(.88);
+}
+.env-flap-right{
+  right:0;
+  border-bottom:solid calc(50% + 4px) #C8A040;
+  border-left:solid 50% transparent;
+  filter:brightness(.82);
+}
+
+/* Bottom triangle */
+.env-bottom{
+  position:absolute;bottom:0;left:0;right:0;z-index:1;
+  height:0;width:0;
+  border-left:solid 50% transparent;
+  border-right:solid 50% transparent;
+  border-bottom:solid 52% #B8902A;
+  margin:0 auto;
+  filter:brightness(.9);
+}
+
+/* Top flap — this is what rotates open */
+.env-flap-top{
+  position:absolute;top:0;left:0;right:0;z-index:5;
+  transform-origin:top center;
+  transform-style:preserve-3d;
+  transition:transform .9s cubic-bezier(.4,0,.2,1);
+  height:0;width:0;
+  border-left:solid 50% transparent;
+  border-right:solid 50% transparent;
+  border-top:solid 52% #D4AF50;
+  margin:0 auto;
+  filter:drop-shadow(0 4px 6px rgba(80,50,10,.18));
+}
+.env-flap-top.open{
+  transform:rotateX(180deg);
+}
+
+/* Wax seal on flap */
+.seal{
+  position:absolute;
+  /* sits at the tip of the top flap */
+  top:22%;left:50%;
+  transform:translateX(-50%);
+  width:clamp(38px,9vw,50px);
+  height:clamp(38px,9vw,50px);
+  z-index:8;
+  transition:opacity .3s ease .2s;
+}
+.seal.hide{opacity:0;pointer-events:none}
+.seal svg{width:100%;height:100%}
+
+/* Envelope gold border lines */
+.env-lines{
+  position:absolute;inset:8px;border:1px solid rgba(255,220,100,.4);border-radius:2px;z-index:3;pointer-events:none;
+}
+
+/* Floral corner on envelope front */
+.env-corner-tl,.env-corner-br{
+  position:absolute;z-index:4;
+  font-size:clamp(18px,5vw,26px);
+  opacity:.55;pointer-events:none;line-height:1;
+  filter:sepia(1) saturate(1.5) hue-rotate(-10deg);
+}
+.env-corner-tl{top:6px;left:8px}
+.env-corner-br{bottom:6px;right:8px;transform:rotate(180deg)}
+
+/* Monogram on envelope front */
+.env-mono{
   position:absolute;inset:0;
-  background:rgba(240,232,210,0.62);
+  display:flex;align-items:center;justify-content:center;
+  z-index:4;pointer-events:none;
+}
+.env-mono-inner{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.env-mono-text{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(18px,5vw,26px);
+  font-weight:400;letter-spacing:.18em;
+  color:rgba(90,60,10,.75);
+  line-height:1;
+}
+.env-mono-sub{
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;
+  font-size:clamp(8px,2.2vw,11px);
+  color:rgba(90,60,10,.5);
+  letter-spacing:.2em;
 }
 
-/* Card sits above the blurred bg */
-.card{
-  position:relative;z-index:1;
-  /* Fill most of the viewport height, constrain width */
-  height:min(96vh, 700px);
-  width:auto;
-  aspect-ratio:3/4;
-  max-width:92vw;
+/* Click hint */
+.env-hint{
+  text-align:center;
+  margin-top:18px;
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;
+  font-size:clamp(10px,2.5vw,13px);
+  color:rgba(100,70,20,.5);
+  letter-spacing:.1em;
+  animation:hintPulse 2.5s ease-in-out infinite;
+  transition:opacity .4s;
+}
+.env-hint.hide{opacity:0}
+@keyframes hintPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ══════════════════════════════
+   CARD rising from envelope
+══════════════════════════════ */
+.card-wrap{
+  position:absolute;
+  bottom:24%;left:50%;
+  transform:translateX(-50%) translateY(0);
+  width:88%;
+  z-index:3;
+  opacity:0;
+  transition:
+    opacity .6s ease 0s,
+    transform 1s cubic-bezier(.22,1,.36,1) 0s;
+  pointer-events:none;
+}
+.card-wrap.rise{
+  opacity:1;
+  transform:translateX(-50%) translateY(-108%);
+  pointer-events:auto;
 }
 
-.card img{
-  height:100%;width:100%;
-  object-fit:cover;
-  object-position:center top;
-  display:block;
-  border-radius:3px;
-  /* Feathered edges blend into the bg */
-  -webkit-mask-image:radial-gradient(ellipse 96% 96% at 50% 50%, black 70%, transparent 100%);
-  mask-image:radial-gradient(ellipse 96% 96% at 50% 50%, black 70%, transparent 100%);
-  box-shadow:
-    0 0 60px rgba(200,170,110,.35),
-    0 12px 48px rgba(80,50,20,.18);
+.card-wrap img{
+  width:100%;display:block;border-radius:3px;
+  box-shadow:0 8px 40px rgba(80,50,10,.28),0 2px 8px rgba(80,50,10,.12);
+  -webkit-mask-image:radial-gradient(ellipse 96% 96% at 50% 50%,black 70%,transparent 100%);
+  mask-image:radial-gradient(ellipse 96% 96% at 50% 50%,black 70%,transparent 100%);
 }
 
+/* Cal button on card */
 .cal-btn{
   position:absolute;
-  top:67%;
-  left:50%;
+  top:67%;left:50%;
   transform:translateX(-50%);
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 18px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 16px;
   background:rgba(248,242,230,.82);
   border:1px solid rgba(179,146,69,.45);
   color:#8A6A24;
   font-family:'Playfair Display',serif;
-  font-size:9px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  text-decoration:none;
-  border-radius:999px;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  font-size:8px;letter-spacing:.22em;text-transform:uppercase;
+  text-decoration:none;border-radius:999px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   white-space:nowrap;
-  transition:background .25s,color .25s,box-shadow .25s;
+  transition:background .25s,color .25s;
 }
-.cal-btn:hover{
-  background:rgba(179,146,69,.85);
-  color:#FAF5E8;
-  box-shadow:0 4px 16px rgba(100,70,10,.22);
-}
+.cal-btn:hover{background:rgba(179,146,69,.85);color:#FAF5E8}
 .cal-btn:active{transform:translateX(-50%) scale(.97)}
-.cal-btn svg{
-  width:10px;height:10px;flex-shrink:0;
-  stroke:currentColor;fill:none;
-  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
-}
+.cal-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
+/* ── MUSIC BTN (fixed, bottom-right) ── */
 #mus-btn{
-  position:fixed;
-  bottom:20px;right:20px;z-index:10;
-  width:40px;height:40px;
-  background:rgba(248,242,230,.82);
+  position:fixed;bottom:20px;right:20px;z-index:20;
+  width:42px;height:42px;
+  background:rgba(248,242,230,.85);
   border:1px solid rgba(179,146,69,.45);
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;
-  box-shadow:0 2px 10px rgba(0,0,0,.1);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  box-shadow:0 2px 12px rgba(0,0,0,.12);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   transition:background .25s,transform .2s;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s ease,background .25s,transform .2s;
 }
+#mus-btn.show{opacity:1;pointer-events:auto}
 #mus-btn:hover{background:rgba(179,146,69,.85);transform:scale(1.08)}
-#mus-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:#8A6A24;transition:color .25s}
-#mus-btn:hover svg{color:#FAF5E8}
-#mus-btn.playing svg{color:#8A6A24}
+#mus-btn svg{width:15px;height:15px;stroke:#8A6A24;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+#mus-btn:hover svg{stroke:#FAF5E8}
+
+/* ── MUSIC NOTE floating animation ── */
+.note{
+  position:fixed;
+  font-size:14px;
+  color:rgba(139,105,20,.6);
+  pointer-events:none;z-index:15;
+  animation:floatNote linear forwards;
+  opacity:0;
+}
+@keyframes floatNote{
+  0%{opacity:0;transform:translateY(0) rotate(-10deg) scale(.8)}
+  15%{opacity:.8}
+  80%{opacity:.5}
+  100%{opacity:0;transform:translateY(-90px) rotate(18deg) scale(1.1)}
+}
+
+/* Sparkle particles */
+.spark{
+  position:fixed;pointer-events:none;z-index:15;border-radius:50%;
+  animation:sparkFly linear forwards;
+}
+@keyframes sparkFly{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}
+}
 </style>
 </head>
 <body>
 
-<div class="bg-blur"></div>
-
-<div class="card">
-  <img
-    src="https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/img/ChatGPT%20Image%20Jun%2019%2C%202026%2C%2004_24_00%20PM.png"
-    alt="Apurva &amp; Nikhil Save the Date — 06 December 2026, Bangalore, India"
-  />
-  <a class="cal-btn"
-     href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Apurva+%26+Nikhil+Wedding&dates=20261206%2F20261207&location=Bangalore%2C+India&details=Save+the+Date+for+Apurva+%26+Nikhil%27s+Wedding"
-     target="_blank"
-     rel="noopener">
-    <svg viewBox="0 0 24 24">
-      <rect x="3" y="4" width="18" height="18" rx="2"/>
-      <line x1="16" y1="2" x2="16" y2="6"/>
-      <line x1="8" y1="2" x2="8" y2="6"/>
-      <line x1="3" y1="10" x2="21" y2="10"/>
-    </svg>
-    <span>Add to Calendar</span>
-  </a>
-</div>
-
-
+<div class="bg"></div>
 <audio id="aud" loop>
   <source src="https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/mp3/Jashn-E-Bahaaraa%20(Instrumental%20-%20Flute)%20-%20A.%20R.%20Rahman.mp3" type="audio/mpeg"/>
 </audio>
 
-<button id="mus-btn" aria-label="Play music">
-  <!-- Play icon (default) -->
-  <svg id="icon-play" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-  <!-- Pause icon (hidden until playing) -->
+<div class="stage">
+  <div style="display:flex;flex-direction:column;align-items:center">
+
+    <!-- ── ENVELOPE ── -->
+    <div class="env-wrap">
+
+      <!-- Card inside envelope (rises on open) -->
+      <div class="card-wrap" id="card-wrap">
+        <img
+          src="https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/img/ChatGPT%20Image%20Jun%2019%2C%202026%2C%2004_24_00%20PM.png"
+          alt="Apurva & Nikhil Save the Date"
+        />
+        <a class="cal-btn"
+           href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Apurva+%26+Nikhil+Wedding&dates=20261206%2F20261207&location=Bangalore%2C+India&details=Save+the+Date+for+Apurva+%26+Nikhil%27s+Wedding"
+           target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Add to Calendar</span>
+        </a>
+      </div>
+
+      <!-- Envelope body -->
+      <div class="envelope" id="envelope">
+
+        <!-- Back -->
+        <div class="env-back">
+          <div class="env-lines"></div>
+          <!-- Decorative envelope body pattern -->
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.18" viewBox="0 0 340 230" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- Centre diamond grid -->
+            <path d="M170,30 L220,115 L170,200 L120,115 Z" stroke="#8B6914" stroke-width=".8" fill="none"/>
+            <path d="M170,55 L205,115 L170,175 L135,115 Z" stroke="#8B6914" stroke-width=".5" fill="none"/>
+            <!-- Corner scrollwork -->
+            <path d="M20,20 Q30,10 40,20 Q50,30 40,40" stroke="#8B6914" stroke-width=".8" fill="none"/>
+            <path d="M320,20 Q310,10 300,20 Q290,30 300,40" stroke="#8B6914" stroke-width=".8" fill="none"/>
+            <path d="M20,210 Q30,220 40,210 Q50,200 40,190" stroke="#8B6914" stroke-width=".8" fill="none"/>
+            <path d="M320,210 Q310,220 300,210 Q290,200 300,190" stroke="#8B6914" stroke-width=".8" fill="none"/>
+            <!-- Thin horizontal rules -->
+            <line x1="30" y1="115" x2="110" y2="115" stroke="#8B6914" stroke-width=".4" opacity=".6"/>
+            <line x1="230" y1="115" x2="310" y2="115" stroke="#8B6914" stroke-width=".4" opacity=".6"/>
+          </svg>
+        </div>
+
+        <!-- Side flaps -->
+        <div class="env-flap-left"></div>
+        <div class="env-flap-right"></div>
+
+        <!-- Bottom triangle -->
+        <div class="env-bottom"></div>
+
+        <!-- Decorative corners -->
+        <div class="env-corner-tl">🌸</div>
+        <div class="env-corner-br">🌸</div>
+
+        <!-- Monogram on front -->
+        <div class="env-mono">
+          <div class="env-mono-inner">
+            <div class="env-mono-text">A &nbsp;|&nbsp; N</div>
+            <div class="env-mono-sub">Save the Date</div>
+          </div>
+        </div>
+
+        <!-- Top flap (rotates open) -->
+        <div class="env-flap-top" id="flap-top">
+          <!-- Flap inner decoration -->
+          <svg style="position:absolute;top:-100%;left:50%;transform:translateX(-50%);width:70%;opacity:.25" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100,90 Q130,50 160,10 Q130,30 100,15 Q70,30 40,10 Q70,50 100,90Z" stroke="#6B4E10" stroke-width=".8" fill="rgba(107,78,16,.15)"/>
+          </svg>
+        </div>
+
+        <!-- Wax seal -->
+        <div class="seal" id="seal">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sealG" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#D4A030"/>
+                <stop offset="60%" stop-color="#A87020"/>
+                <stop offset="100%" stop-color="#7A5010"/>
+              </radialGradient>
+            </defs>
+            <!-- Star burst -->
+            <polygon points="30,2 33,22 52,12 38,26 58,30 38,34 52,48 33,38 30,58 27,38 8,48 22,34 2,30 22,26 8,12 27,22" fill="url(#sealG)" opacity=".9"/>
+            <!-- Inner circle -->
+            <circle cx="30" cy="30" r="16" fill="url(#sealG)"/>
+            <circle cx="30" cy="30" r="13" fill="none" stroke="rgba(255,220,100,.5)" stroke-width=".8"/>
+            <!-- Letters -->
+            <text x="30" y="35" font-family="'Playfair Display',Georgia,serif" font-size="12" font-weight="500" fill="rgba(255,248,220,.9)" text-anchor="middle" letter-spacing="2">AN</text>
+          </svg>
+        </div>
+
+      </div><!-- /envelope -->
+
+      <div class="env-hint" id="hint">✦ &nbsp; Tap to open &nbsp; ✦</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Music button (appears after open) -->
+<button id="mus-btn" aria-label="Toggle music">
+  <svg id="icon-play" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="#8A6A24"/></svg>
   <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
 </button>
 
 <script>
-const btn  = document.getElementById('mus-btn');
-const aud  = document.getElementById('aud');
-const play = document.getElementById('icon-play');
-const pause= document.getElementById('icon-pause');
-let going  = false;
+const envelope  = document.getElementById('envelope');
+const flapTop   = document.getElementById('flap-top');
+const seal      = document.getElementById('seal');
+const cardWrap  = document.getElementById('card-wrap');
+const hint      = document.getElementById('hint');
+const musBtn    = document.getElementById('mus-btn');
+const aud       = document.getElementById('aud');
+const iconPlay  = document.getElementById('icon-play');
+const iconPause = document.getElementById('icon-pause');
+let opened = false, playing = false;
 
-btn.addEventListener('click', () => {
-  if (!going) {
+/* ── OPEN ENVELOPE ── */
+envelope.addEventListener('click', () => {
+  if (opened) return;
+  opened = true;
+
+  hint.classList.add('hide');
+  envelope.classList.add('opened');
+
+  // 1. Seal fades
+  seal.classList.add('hide');
+
+  // 2. Flap opens
+  setTimeout(() => flapTop.classList.add('open'), 150);
+
+  // 3. Sparkle burst from seal position
+  const sealRect = seal.getBoundingClientRect();
+  spawnSparks(sealRect.left + sealRect.width/2, sealRect.top + sealRect.height/2, 16);
+
+  // 4. Card rises
+  setTimeout(() => {
+    cardWrap.classList.add('rise');
+  }, 700);
+
+  // 5. Music starts + music btn appears
+  setTimeout(() => {
     aud.play().catch(()=>{});
-    play.style.display  = 'none';
-    pause.style.display = 'block';
+    playing = true;
+    iconPlay.style.display  = 'none';
+    iconPause.style.display = 'block';
+    musBtn.classList.add('show');
+    startNotes();
+  }, 1200);
+});
+
+/* ── MUSIC TOGGLE ── */
+musBtn.addEventListener('click', () => {
+  if (!playing) {
+    aud.play().catch(()=>{});
+    iconPlay.style.display  = 'none';
+    iconPause.style.display = 'block';
+    playing = true;
+    startNotes();
   } else {
     aud.pause();
-    play.style.display  = 'block';
-    pause.style.display = 'none';
+    iconPlay.style.display  = 'block';
+    iconPause.style.display = 'none';
+    playing = false;
   }
-  going = !going;
 });
-</script>
 
+/* ── FLOATING MUSIC NOTES ── */
+const noteSymbols = ['♪','♫','♩','♬'];
+let noteInterval;
+
+function spawnNote() {
+  const r = musBtn.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'note';
+  el.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+  el.style.left = (r.left + r.width/2 + (Math.random()-0.5)*24) + 'px';
+  el.style.top  = (r.top - 4) + 'px';
+  el.style.animationDuration = (2.2 + Math.random()*1.2) + 's';
+  el.style.fontSize = (11 + Math.random()*6) + 'px';
+  document.body.appendChild(el);
+  el.addEventListener('animationend', () => el.remove());
+}
+
+function startNotes() {
+  clearInterval(noteInterval);
+  noteInterval = setInterval(() => { if (playing) spawnNote(); }, 900);
+}
+
+/* ── SPARKLE BURST ── */
+function spawnSparks(cx, cy, count) {
+  const cols = ['#D4AF50','#EDD98A','#C8A030','#F0D060','#fff8dc'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'spark';
+    const angle = (i / count) * Math.PI * 2;
+    const dist  = 30 + Math.random() * 50;
+    const tx    = Math.cos(angle) * dist;
+    const ty    = Math.sin(angle) * dist;
+    const size  = 3 + Math.random() * 4;
+    el.style.cssText = `
+      left:${cx}px;top:${cy}px;
+      width:${size}px;height:${size}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      --tx:${tx}px;--ty:${ty}px;
+      animation-duration:${0.5 + Math.random()*0.5}s;
+      animation-delay:${Math.random()*0.15}s;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+</script>
 </body>
 </html>
