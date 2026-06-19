@@ -31,28 +31,32 @@ html,body{
   top:67%;
   left:50%;
   transform:translateX(-50%);
+
   display:inline-flex;
   align-items:center;
   gap:6px;
-  padding:7px 18px;
-  background:rgba(245,237,210,0.55);
-  border:0.5px solid rgba(180,140,40,.5);
-  color:#6B4E10;
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(7px,1.6vw,9px);
-  font-weight:400;
-  letter-spacing:.28em;
+
+  padding:8px 18px;
+
+  background:rgba(248,242,230,.82);
+  border:1px solid rgba(179,146,69,.45);
+
+  color:#8A6A24;
+
+  font-family:'Playfair Display',serif;
+  font-size:9px;
+  letter-spacing:.22em;
   text-transform:uppercase;
   text-decoration:none;
-  white-space:nowrap;
-  border-radius:1px;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-  transition:background .25s,color .25s;
+
+  border-radius:999px;
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+  backdrop-filter:blur(8px);
 }
-.cal-btn:hover{
-  background:rgba(139,105,20,0.75);
-  color:#FAF5E8;
+.cal-btn:active{
+    transform:translateX(-50%) scale(.97);
 }
 .cal-btn svg{
   width:10px;height:10px;flex-shrink:0;
@@ -69,23 +73,21 @@ html,body{
     alt="Apurva &amp; Nikhil Save the Date — 06 December 2026, Bangalore, India"
   />
 
-  <a class="date-zone"
-     href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Apurva+%26+Nikhil+Wedding&dates=20261206%2F20261207&location=Bangalore%2C+India&details=Save+the+Date+for+Apurva+%26+Nikhil%27s+Wedding+%E2%80%94+06+December+2026%2C+Bangalore%2C+India"
-     target="_blank"
-     rel="noopener"
-     aria-label="Add Apurva & Nikhil's wedding to your calendar">
+<a class="cal-btn"
+   href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Apurva+%26+Nikhil+Wedding&dates=20261206%2F20261207&location=Bangalore%2C+India&details=Save+the+Date+for+Apurva+%26+Nikhil%27s+Wedding"
+   target="_blank"
+   rel="noopener">
 
-    <div class="overlay">
-      <svg viewBox="0 0 24 24">
-        <rect x="3" y="4" width="18" height="18" rx="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-      <span class="overlay-text">Add to Calendar</span>
-    </div>
+<svg viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="18" rx="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+</svg>
 
-  </a>
+<span>Add to Calendar</span>
+
+</a>
 </div>
 
 </body>
