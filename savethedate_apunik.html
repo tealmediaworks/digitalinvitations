@@ -4,12 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Apurva &amp; Nikhil · Save the Date · 06 December 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{
-  min-height:100%;background:#E4DDD5;
+  min-height:100%;
+  background:#E4DDD5;
   display:flex;align-items:center;justify-content:center;
   padding:20px 12px;
   font-family:'Playfair Display',Georgia,serif;
@@ -25,80 +25,59 @@ html,body{
   box-shadow:0 8px 32px rgba(50,30,10,.18),0 2px 8px rgba(50,30,10,.1);
 }
 
-/* ── INVISIBLE HOTSPOT over the date+location text ── */
-.date-hotspot{
+/* Clickable zone over "06TH DECEMBER 2026 / BANGALORE, INDIA" */
+.date-zone{
   position:absolute;
-  /* Adjust these to sit exactly over "06TH DECEMBER 2026 / BANGALORE, INDIA" in your image */
-  top:67%;
-  left:20%;
-  width:60%;
-  height:8%;
+  top:58%;
+  left:18%;
+  width:64%;
+  height:9%;
   cursor:pointer;
   text-decoration:none;
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:2px;
-
-  /* Transparent by default */
-  background:transparent;
-  border:1.5px solid transparent;
-  transition:background .3s ease, border-color .3s ease, backdrop-filter .3s ease;
+  /* Subtle permanent gold underline so it's findable */
+  border-bottom: 1.5px solid rgba(180,140,40,.45);
 }
 
-/* Tooltip label — hidden until hover */
-.date-hotspot .tooltip{
+/* Overlay that appears on hover */
+.date-zone .overlay{
   position:absolute;
-  bottom:calc(100% + 8px);
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(245,238,220,0.96);
-  border:0.5px solid rgba(180,140,40,.6);
-  color:#6B4E10;
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(8px,1.8vw,10px);
-  font-weight:400;
-  letter-spacing:.3em;
-  text-transform:uppercase;
-  padding:8px 18px;
-  white-space:nowrap;
-  pointer-events:none;
+  inset:0;
+  background:rgba(245,237,210,0.82);
+  border:1px solid rgba(180,140,40,.6);
+  border-radius:2px;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
   opacity:0;
-  transform:translateX(-50%) translateY(4px);
-  transition:opacity .25s ease, transform .25s ease;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-  box-shadow:0 2px 12px rgba(100,70,10,.15);
+  transition:opacity .25s ease;
 }
 
-/* Tooltip arrow */
-.date-hotspot .tooltip::after{
-  content:'';
-  position:absolute;
-  top:100%;left:50%;
-  transform:translateX(-50%);
-  border:5px solid transparent;
-  border-top-color:rgba(180,140,40,.5);
-}
-
-/* Hover state */
-.date-hotspot:hover{
-  background:rgba(250,245,230,0.18);
-  border-color:rgba(180,140,40,.4);
-  backdrop-filter:blur(2px);
-  -webkit-backdrop-filter:blur(2px);
-}
-.date-hotspot:hover .tooltip{
+.date-zone:hover .overlay,
+.date-zone:focus .overlay{
   opacity:1;
-  transform:translateX(-50%) translateY(0);
 }
 
-/* Calendar icon inside tooltip */
-.tooltip svg{
-  width:11px;height:11px;
-  stroke:currentColor;fill:none;stroke-width:1.8;
-  stroke-linecap:round;stroke-linejoin:round;
-  vertical-align:middle;margin-right:6px;margin-top:-1px;
+.overlay-text{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(9px,2.2vw,12px);
+  font-weight:500;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:#6B4E10;
+  white-space:nowrap;
+}
+
+.overlay svg{
+  width:14px;height:14px;flex-shrink:0;
+  stroke:#6B4E10;fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
 }
 </style>
 </head>
@@ -110,21 +89,22 @@ html,body{
     alt="Apurva &amp; Nikhil Save the Date — 06 December 2026, Bangalore, India"
   />
 
-  <!-- Invisible clickable zone over the date & location text -->
-  <a class="date-hotspot"
+  <a class="date-zone"
      href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Apurva+%26+Nikhil+Wedding&dates=20261206%2F20261207&location=Bangalore%2C+India&details=Save+the+Date+for+Apurva+%26+Nikhil%27s+Wedding+%E2%80%94+06+December+2026%2C+Bangalore%2C+India"
      target="_blank"
      rel="noopener"
      aria-label="Add Apurva & Nikhil's wedding to your calendar">
-    <span class="tooltip">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+
+    <div class="overlay">
+      <svg viewBox="0 0 24 24">
         <rect x="3" y="4" width="18" height="18" rx="2"/>
         <line x1="16" y1="2" x2="16" y2="6"/>
         <line x1="8" y1="2" x2="8" y2="6"/>
         <line x1="3" y1="10" x2="21" y2="10"/>
       </svg>
-      Add to Calendar
-    </span>
+      <span class="overlay-text">Add to Calendar</span>
+    </div>
+
   </a>
 </div>
 
